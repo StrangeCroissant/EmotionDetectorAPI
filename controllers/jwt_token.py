@@ -5,7 +5,7 @@ from config import Config
 
 # get env parameters
 
-SECTER_KEY = Config.SECTER_KEY
+SECRET_KEY = Config.SECRET_KEY
 ALGORITHM = Config.ALGORITHM   
 ACCESS_TOKEN_EXPIRE_MINUTES = Config.ACCESS_TOKEN_EXPIRE_MINUTES
 
@@ -16,14 +16,15 @@ def create_access_token(data: dict, expires_delta: Optional[timedelta] = None):
     else:
         expire = datetime.utcnow() + timedelta(minutes=ACCESS_TOKEN_EXPIRE_MINUTES)
     to_encode.update({"exp": expire})
-    encoded_jwt = jwt.encode(to_encode, SECTER_KEY, algorithm=ALGORITHM)
+    encoded_jwt = jwt.encode(to_encode, SECRET_KEY, algorithm=ALGORITHM)
     return encoded_jwt
 
 def verify_token(token: str, credentials_exception):
     try:
-        payload = jwt.decode(token, SECTER_KEY, algorithms=[ALGORITHM])
+        payload = jwt.decode(token, Config.SECRET_KEY, algorithms=[Config.ALGORITHM])
         username: str = payload.get("sub")
         if username is None:
             raise credentials_exception
+        return username
     except JWTError:
         raise credentials_exception
