@@ -5,11 +5,10 @@ from config import Config
 from helpers.templates import MessagesTemplates
 
 class GPTClasifier:
-    def __init__(self,emotion_model=Config.EMOTION_MODEL):
-        self.api_key = os.getenv("OPENAI_API_KEY")
+    def __init__(self,api_key,emotion_model=Config.EMOTION_MODEL):
         self.model_name = os.getenv("OPENAI_MODEL_NAME")
         self.emotion_model = emotion_model
-        self.client = openai.OpenAI(api_key=self.api_key)
+        self.client = openai.OpenAI(api_key=api_key)
 
     def _set_emotions(self):
         """
